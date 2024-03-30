@@ -9,3 +9,36 @@ plugin_dir=$(dirname "$(dirname "$current_script_path")")
 source "${plugin_dir}/lib/utils.bash"
 
 install_version "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
+
+install_aria2() {
+  local install_type=$1
+  local version=$2
+  local install_path=$3
+
+  if [ "$install_type" != "version" ]; then
+    fail "asdf-aria2 supports release installs only"
+  fi
+
+  local download_url
+
+  case "$OSTYPE" in
+    darwin*) download_url="https://github.com/aria2/aria2/releases/download/release-${version}/aria2-${version}-osx-darwin.tar.bz2" ;;
+    linux*) download_url="https://github.com/aria2/aria2/releases/download/release-${version}/aria2-${version}.tar.bz2" ;;
+    *) fail "Unsupported platform" ;;
+  esac
+
+  local source_path="${install_path}/bin/aria2.tar.bz2"
+
+  (
+    echo "∗ Downloading and installing aria2..."
+    curl --silent --location --create-dirs --output "$source_path" "$download_url" || fail "Could not download"
+    tar -xjf "$source_path" -C "$install_path" --strip-components=1 || fail "Could not uncompress"
+    echo "The installation was successful!"
+    rm "$source_path"
+  ) || (
+    rm -rf "$install_path"
+    fail "An error occurred"
+  )
+}
+
+install_aria2 "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"

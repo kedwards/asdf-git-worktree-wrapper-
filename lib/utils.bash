@@ -5,7 +5,7 @@ set -euo pipefail
 # TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for git-worktree-wrapper.
 GH_REPO="https://github.com/kedwards/git-worktree-wrapper"
 TOOL_NAME="git-worktree-wrapper"
-TOOL_TEST="git-worktree-wrapper --help"
+TOOL_TEST="git-worktree-wrapper.sh"
 
 fail() {
 	echo -e "asdf-$TOOL_NAME: $*"

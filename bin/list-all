@@ -8,4 +8,11 @@ plugin_dir=$(dirname "$(dirname "$current_script_path")")
 # shellcheck source=./lib/utils.bash
 source "${plugin_dir}/lib/utils.bash"
 
+list_all_versions() {
+  git ls-remote --tags --refs https://github.com/lu0/git-worktree-wrapper |
+    grep -o 'refs/tags/.*' |
+    cut -d/ -f3- |
+    sed 's/^v//'
+}
+
 list_all_versions | sort_versions | xargs echo
