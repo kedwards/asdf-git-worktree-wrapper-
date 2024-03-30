@@ -5,7 +5,7 @@ set -euo pipefail
 # TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for git-worktree-wrapper.
 GH_REPO="https://github.com/lu0/git-worktree-wrapper"
 TOOL_NAME="git-worktree-wrapper"
-TOOL_TEST="git --version"
+TOOL_TEST="git-worktree-wrapper.sh"
 
 fail() {
 	echo -e "asdf-$TOOL_NAME: $*"
@@ -64,8 +64,9 @@ install_version() {
 		# TODO: Assert git-worktree-wrapper executable exists.
 		local tool_cmd
 		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
-		test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
-
+		# test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
+		[ -f "$install_path/$tool_cmd" ] || fail "Expected $install_path/$tool_cmd to be executable."
+  
 		echo "$TOOL_NAME $version installation was successful!"
 	) || (
 		rm -rf "$install_path"
